@@ -3,11 +3,13 @@ Python Practice For Beginners
 ------------------------------------------------------------------------------------------------
 Project Overview:
 -----------------
+
 This repo contains python coding examples for beginners. I will be adding practice projects
 with varying difficulty levels. These examples will be a mix of problem solving, datastructure
 and machine learning problems. I started this to practice machine learning and refine my python 
 skills. I hope this will be helpful to others who are at the beginners level and want to improve
 their coding skills.
+
 ------------------------------------------------------------------------------------------------
 
 Libraries Used:
