@@ -4,8 +4,8 @@ sys.path.insert(0, myPath + '/../')
 
 import unittest
 import math
-from packages import exponentials
+from packages import functions
 
 def test_generate():
     y = lambda x: math.exp(x)
-    assert len(exponentials.generate(y)) == 49
+    assert len(functions.generate(y)) == 49
