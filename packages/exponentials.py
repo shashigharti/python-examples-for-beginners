@@ -1,11 +1,10 @@
 # !/usr/bin/env python3
-"""Exploring exponential function: Generate and visualize exponential functions
-Name: Shashi Gharti
-Date: 5/17/20
-----------------------------------------------------------------------------
-This module contains files that generates various values for different 
-exponential functions and plots it to the graph
-----------------------------------------------------------------------------
+""" Exploring exponential function: Generate and visualize exponential functions
+
+    ----------------------------------------------------------------------------
+    This module contains files that generates various values for different 
+    exponential functions and plots it to the graph
+    ----------------------------------------------------------------------------
 """
 # import libraries
 import math
