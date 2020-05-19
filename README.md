@@ -27,3 +27,36 @@ File Structure:
 Examples:
 ---------------
 1. Exploring linear, exponential and quadratic functions
+
+Getting Started:
+---------------
+
+- Clone the repo
+
+```
+git clone git@github.com:shashigharti/python-examples-for-beginners.git
+```
+
+- Create a virtual environment using anaconda tool (https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+    - python version 3 or above
+
+- Once virtual environment is setup install 
+    - pytest
+    - numpy
+
+- To run tests run:
+
+```
+pytest
+```
+OR
+
+```
+python -m pytest
+```
+
+- To check code usage in notebook run:
+
+``` 
+jupyter notebook
+```
