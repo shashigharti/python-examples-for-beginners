@@ -10,4 +10,5 @@ from packages import functions
 
 def test_generate():
     y = lambda x: math.exp(x)
-    assert len(functions.generate(y)) == 49
+    assert len(functions.generate(y)[0]) == 49
+    assert len(functions.generate(y)[1]) == 49
