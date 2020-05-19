@@ -26,7 +26,7 @@ File Structure:
 
 Examples:
 ---------------
-1. Exploring linear, exponential and quadratic functions
+1. [Exploring linear, exponential and quadratic functions](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/functions.ipynb)
 
 Getting Started:
 ---------------
