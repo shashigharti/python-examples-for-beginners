@@ -49,7 +49,7 @@ git clone git@github.com:shashigharti/python-examples-for-beginners.git
 ```
 pytest
 ```
-OR
+   OR
 
 ```
 python -m pytest
