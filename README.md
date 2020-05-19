@@ -15,7 +15,7 @@ their coding skills.
 Libraries Used:
 ---------------
 1. Pytest for unit testing
-2. Python 3.7.6
+2. Python 3 (I have version 3.7.6)
 3. Code Formatter(Black: https://pypi.org/project/black/)
 
 File Structure:
