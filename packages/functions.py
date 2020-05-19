@@ -9,10 +9,9 @@
 # import libraries
 import math
 
-def generate(y, rng = [1, 50]):
+
+def generate(y, rng=[1, 50]):
     lst = []
     for i in range(*rng):
         lst.append(y(x=i))
     return lst
-
-
