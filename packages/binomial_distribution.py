@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
 
-def generate_events(number_of_observations=10, reviews_per_observation=10):
+def generate_events(number_of_observations=10, reviews_per_observation=10, success_rate=.95):
     """ Generates events of size equal to 'number_of_observations'. 
     
     Parameters:
@@ -31,7 +31,7 @@ def generate_events(number_of_observations=10, reviews_per_observation=10):
         outcomes = []
         for _ in range(reviews_per_observation):
             rnd_number = random.random()
-            outcomes.append(1) if rnd_number < 0.95 else outcomes.append(0)
+            outcomes.append(1) if rnd_number < success_rate else outcomes.append(0)
 
         events.append(outcomes)
 
