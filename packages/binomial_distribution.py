@@ -135,3 +135,5 @@ def plot_hist(observations, reviews_per_observation,  positive_reviews):
         )
         ax.set_ylabel("Percentage")
         ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
+    
+    plt.show()
