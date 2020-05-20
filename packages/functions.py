@@ -2,7 +2,7 @@
 """ Exploring exponential function: Generate and visualize exponential functions.
 
     ----------------------------------------------------------------------------
-    This module contains files that generates various values for different 
+    This module contains functions that generates various values for different 
     exponential functions and plots it to the graph.
     ----------------------------------------------------------------------------
 """
