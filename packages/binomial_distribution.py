@@ -85,7 +85,7 @@ def display_table(data):
     rows = data[1]
 
     for i in headers:
-        print(i.ljust(len(i) + 10), end="")
+        print(i.ljust(len(i) + 4), end="")
 
     print("")
     for row in rows:
