@@ -1,9 +1,9 @@
 # !/usr/bin/env python3
-""" Exploring binomial distribution: Generate and visualize events.
+""" Exploring binomial distribution: Generate and visualize probabilities.
 
     ----------------------------------------------------------------------------
-    This module contains functions to generate random events and visualize as 
-    histograms
+    This module contains functions to generate events, calculate probability
+    and visualize.
     ----------------------------------------------------------------------------
 """
 # import libraries
@@ -14,50 +14,56 @@ import matplotlib.ticker as ticker
 
 
 def generate_events(number_of_observations=10, reviews_per_observation=10):
-    """ Generates observations with random events
+    """ Generates events of size equal to 'number_of_observations'. 
     
-    Generates given number of observations and returns the list of observations
-
     Parameters:
-        number_of_observations (list):
+        number_of_observations (int): Total number of experiments or observations
+        reviews_per_observation (int): Total reviews per experiment. For e.g, 10 reviews per
+        experiment.
     
     Returns:
-        observations (list): 2D array with rows as observations and columns as events
+        events (list): 1D array of size equal to 'reviews_per_observation' params with cells
+        set a 1's for positive reviews. Random number < .95 represent is assumed to be
+        positive review.
     """
-    observations = []
+    events = []
     for _ in range(number_of_observations):
-        events = []
+        outcomes = []
         for _ in range(reviews_per_observation):
             rnd_number = random.random()
-            events.append(1) if rnd_number < 0.95 else events.append(0)
+            outcomes.append(1) if rnd_number < 0.95 else outcomes.append(0)
 
-        observations.append(events)
+        events.append(outcomes)
 
-    return observations
-
-
-def create_histogram(observations):
-    histogram = []
-    for observation in observations:
-        count = observation.count(1)
-        histogram.append(count)
-    return histogram
+    return events
 
 
-def get_metrics(observations, reviews_per_observation=10, positive_reviews=8):
-    number_of_observations = len(observations)
-    observations_freq_count = {i: 0 for i in range(reviews_per_observation + 1)}
+def get_metrics(events, reviews_per_observation=10, positive_reviews=8):
+    """ Calculate probability of getting given number of positive reviews i.e, 'positive_reviews'.
+    
+    Parameters:
+        events (list): 2D array with events as row and outcomes as column.
+        reviews_per_observation (int): Total reviews per experiment or observation. For e.g, 10 reviews per
+        experiment.
+        positive_reviews (int): Target event for which the probability is to be calculated.
+    
+    Returns:
+        rows (list): 1D array containing information of the experiment and probability of 
+        target event.
+    """
 
-    for observation in observations:
-        count = observation.count(1)
-        observations_freq_count[count] += 1
+    number_of_events = len(events)
+    events_freq_count = {i: 0 for i in range(reviews_per_observation + 1)}
 
-    positive_review_per = (
-        observations_freq_count[positive_reviews] / number_of_observations
-    )
+    # count positive reviews for each event. 1 represent the positive review
+    for event in events:
+        count = event.count(1)
+        events_freq_count[count] += 1
+
+    positive_review_per = events_freq_count[positive_reviews] / number_of_events
 
     rows = [
-        "%d" % number_of_observations,
+        "%d" % number_of_events,
         "%d" % reviews_per_observation,
         "%d" % positive_reviews,
         "{:.2%}".format(positive_review_per),
@@ -66,9 +72,17 @@ def get_metrics(observations, reviews_per_observation=10, positive_reviews=8):
     return rows
 
 
-def display_table(table):
-    headers = table[0]
-    rows = table[1]
+def display_table(data):
+    """ Displays data in table format.
+    
+    Parameters:
+        data (tuple): It is a tuple with headers and rows.
+    
+    Returns:
+        None
+    """
+    headers = data[0]
+    rows = data[1]
 
     for i in headers:
         print(i.ljust(len(i) + 10), end="")
@@ -82,33 +96,37 @@ def display_table(table):
         print("")
 
 
-# def imshow_pair(image_pair, titles=('', ''), figsize=(10, 5), **kwargs):
-#     fig, axes = plt.subplots(ncols=2, figsize=figsize)
-#     for ax, img, label in zip(axes.ravel(), image_pair, titles):
-#         ax.imshow(img, **kwargs)
-#         ax.set_title(label)
-
-
 def plot_hist(observations, reviews_per_observation):
-    freq_hist = []
-    for observation in observations:
-        freq_hist.append(create_histogram(observation))
+    """ Plots histogram.
     
-    plot_rows = (len(freq_hist)//3) + 1
+    Parameters:
+        observations (list): 2D list with the outcomes of all the experiments
+        reviews_per_observation (int): Total reviews per experiment or observation. For e.g, 10 reviews per
+        experiment.
+    
+    Returns:
+        None 
+    """
+    freq_hist_of_outcomes = []
+    for events in observations:
+        freq_hist_of_outcomes.append([event.count(1) for event in events])
+
+    # Display plots in 3 columns
+    plot_rows = (len(freq_hist_of_outcomes) // 3) + 1
     fig, axes = plt.subplots(nrows=plot_rows, ncols=3, figsize=(20, 20))
     fig.subplots_adjust(hspace=0.5)
 
-    for ax, hst in zip(axes.ravel(), freq_hist):
+    for ax, freq_lst in zip(axes.ravel(), freq_hist_of_outcomes):
         ax.hist(
-            hst,
+            freq_lst,
             bins=[i for i in range(1, reviews_per_observation + 1)],
             edgecolor="black",
             linewidth=1.2,
             density=True,
         )
-        ax.set_title("%s observations"%(len(hst)))
-        ax.set_xlabel("No of positive reviews out of %d reviews"%(reviews_per_observation))
+        ax.set_title("%s observations" % (len(hst)))
+        ax.set_xlabel(
+            "No of positive reviews out of %d reviews" % (reviews_per_observation)
+        )
         ax.set_ylabel("Percentage")
         ax.yaxis.set_major_formatter(ticker.PercentFormatter(xmax=1))
-
-  
