@@ -90,7 +90,7 @@ def display_table(data):
     print("")
     for row in rows:
         for index, col in enumerate(row):
-            header_length = len(headers[index]) + 10
+            header_length = len(headers[index]) + 4
             r_offset = header_length - len(col)
             print(col, end=" " * r_offset)
         print("")
