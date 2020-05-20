@@ -96,7 +96,7 @@ def display_table(data):
         print("")
 
 
-def plot_hist(observations, reviews_per_observation):
+def plot_hist(observations, reviews_per_observation,  positive_reviews):
     """ Plots histogram.
     
     Parameters:
@@ -117,14 +117,19 @@ def plot_hist(observations, reviews_per_observation):
     fig.subplots_adjust(hspace=0.5)
 
     for ax, freq_lst in zip(axes.ravel(), freq_hist_of_outcomes):
-        ax.hist(
+        _, _, patches = ax.hist(
             freq_lst,
             bins=[i for i in range(1, reviews_per_observation + 1)],
             edgecolor="black",
             linewidth=1.2,
-            density=True,
+            density=True
         )
-        ax.set_title("%s observations" % (len(hst)))
+        for thispatch in patches: 
+            xy = thispatch.xy
+            if (xy[0] == positive_reviews):
+                thispatch.set_facecolor('r')
+
+        ax.set_title("%s Observations" % (len(freq_lst)))
         ax.set_xlabel(
             "No of positive reviews out of %d reviews" % (reviews_per_observation)
         )
