@@ -98,8 +98,8 @@ class TwitterScrapper:
                 if len(new_tweets) == 0:
                     logging.info("Got {} tweets for {}.".format(num_tweets, query))
                     return
-
-                yield new_tweets
+                for t in new_tweets:
+                    yield t
 
                 num_tweets += len(new_tweets)
                 if num_tweets >= self.limit:
