@@ -3,7 +3,8 @@ import requests
 
 PROXY_URL = "https://free-proxy-list.net/"
 URL = "https://twitter.com/search?f=tweets&vertical=default&q={q}"
-RELOAD_URL = "https://twitter.com/i/search/timeline?f=tweets&q={q}&vertical=default&include_available_features=1&include_entities=1&max_position={max_position}"
+RELOAD_URL = "https://twitter.com/i/search/timeline?f=tweets&q={q}&max_position={max_position}"
+HEADER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0"}
 
 def has_class(class_name):
     return lambda class_: class_ and class_name in class_.split()
@@ -15,10 +16,7 @@ only_tweet_tags = SoupStrainer(
 def from_html(html):
     tweets = BeautifulSoup(html, "html.parser", parse_only=only_tweet_tags)
     for tweet in tweets:
-        try:
-            yield parse(tweet)
-        except BaseException:
-            pass
+        yield parse(tweet)
 
 def parse(html):
     permalink = html["data-permalink-path"]
@@ -64,11 +62,11 @@ def get_query_url(query, pos):
 
 
 def get_proxies():
-    response = requests.get(PROXY_URL)
-    soup = BeautifulSoup(response.text, "lxml")
+    response = requests.get(PROXY_URL, headers=HEADER, timeout=10).text
+    soup = BeautifulSoup(response, "lxml")
     table = soup.find("table", id="proxylisttable")
     list_tr = table.find_all("tr")
-    list_td = [elem.find_all("td") for elem in list_tr]
+    list_td = [elem.find_all("td") for elem in list_tr]   
     list_td = list(filter(None, list_td))
     list_ip = [elem[0].text for elem in list_td]
     list_ports = [elem[1].text for elem in list_td]
