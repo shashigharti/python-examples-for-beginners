@@ -23,6 +23,17 @@ class TwitterScrapper:
         self.proxy_pool = cycle(self.proxies)
 
     def query_page(self, query, pos, retry=5, timeout=60):
+        """Sends request to twitter server to fetch the page data.        
+        
+        parameters:
+            query (str): Query to search for the tweets.
+            pos (str): Position is used for pagination
+            retry (int): Number of times to retry when no data is received
+            timeout (float): number of seconds to wait before timeout
+            
+        Returns:
+            new-tweets, min_position (tuple): list of tweets per page, position
+        """
         url = helper.get_query_url(query, pos)
         logging.info("Scraping tweets from {}".format(url))
 
@@ -66,13 +77,15 @@ class TwitterScrapper:
         except BaseException as e:
             logging.exception('HTTPError {} while requesting "{}"'.format(e, url))
 
-        if retry > 0:
-            logging.info("Retrying... (Attempts left: {})".format(retry))
-            return self.query_page(query, min_position, retry - 1)
-
-        return [], None
-
     def get_tweets_per_page(self, query):
+        """Gets tweets from multiple pages.        
+        
+        parameters:
+            query (str): Query to search for the tweets.
+
+        Returns:
+            new-tweets (list): list of tweets per page.
+        """
         d = {" ": "%20", "#": "%23", ":": "%3A", "&": "%26"}
         for i, item in d.items():
             query = query.replace(i, item)
@@ -99,6 +112,8 @@ class TwitterScrapper:
         logging.info("Got {} tweets for {}.".format(num_tweets, query))
 
     def get_tweets(self, *args):
+        """Returns tweets for the query passed as the argument       
+        """
         tweets = list(self.get_tweets_per_page(*args))
         return tweets if tweets else []
 

@@ -3,22 +3,50 @@ import requests
 
 PROXY_URL = "https://free-proxy-list.net/"
 URL = "https://twitter.com/search?f=tweets&vertical=default&q={q}"
-RELOAD_URL = "https://twitter.com/i/search/timeline?f=tweets&q={q}&max_position={max_position}"
-HEADER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0"}
+RELOAD_URL = (
+    "https://twitter.com/i/search/timeline?f=tweets&q={q}&max_position={max_position}"
+)
+HEADER = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0"
+}
+
+
+def get_proxies():
+    """Get proxy lists to connect to twitter server to fetch data      
+    """
+    response = requests.get(PROXY_URL, headers=HEADER, timeout=10).text
+    soup = BeautifulSoup(response, "lxml")
+    table = soup.find("table", id="proxylisttable")
+    list_tr = table.find_all("tr")
+    list_td = [elem.find_all("td") for elem in list_tr]
+    list_td = list(filter(None, list_td))
+    list_ip = [elem[0].text for elem in list_td]
+    list_ports = [elem[1].text for elem in list_td]
+    list_proxies = [":".join(elem) for elem in list(zip(list_ip, list_ports))]
+
+    return list_proxies
+
 
 def has_class(class_name):
     return lambda class_: class_ and class_name in class_.split()
+
 
 only_tweet_tags = SoupStrainer(
     "div", class_=has_class("tweet"), **{"data-tweet-id": True}
 )
 
+
 def from_html(html):
+    """Initiate beautifulsoup class to parse html and read tweet data
+    """
     tweets = BeautifulSoup(html, "html.parser", parse_only=only_tweet_tags)
     for tweet in tweets:
         yield parse(tweet)
 
+
 def parse(html):
+    """Parse tweet data from html   
+    """
     permalink = html["data-permalink-path"]
     screen_name = html["data-screen-name"]
     name = html["data-name"]
@@ -47,29 +75,11 @@ def parse(html):
     return tweet
 
 
-def find_value(html, key):
-    pos_begin = html.find(key) + len(key) + 2
-    pos_end = html.find('"', pos_begin)
-    return html[pos_begin:pos_end]
-
-
 def get_query_url(query, pos):
+    """Helper function to switch query url        
+    """
     return (
         URL.format(q=query)
         if pos is None
         else RELOAD_URL.format(q=query, max_position=pos)
     )
-
-
-def get_proxies():
-    response = requests.get(PROXY_URL, headers=HEADER, timeout=10).text
-    soup = BeautifulSoup(response, "lxml")
-    table = soup.find("table", id="proxylisttable")
-    list_tr = table.find_all("tr")
-    list_td = [elem.find_all("td") for elem in list_tr]   
-    list_td = list(filter(None, list_td))
-    list_ip = [elem[0].text for elem in list_td]
-    list_ports = [elem[1].text for elem in list_td]
-    list_proxies = [":".join(elem) for elem in list(zip(list_ip, list_ports))]
-
-    return list_proxies
