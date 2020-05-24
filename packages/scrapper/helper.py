@@ -89,26 +89,3 @@ def find_value(html, key):
     pos_begin = html.find(key) + len(key) + 2
     pos_end = html.find('"', pos_begin)
     return html[pos_begin:pos_end]
-
-def display_table(data):
-    """ Displays data in table format.
-    
-    Parameters:
-        data (tuple): It is a tuple with headers and rows.
-    
-    Returns:
-        None
-    """
-    headers = data[0]
-    rows = data[1]
-
-    for i in headers:
-        print(i.ljust(len(i) + 4), end="")
-
-    print("")
-    for row in rows:
-        for index, col in enumerate(row):
-            header_length = len(headers[index]) + 4
-            r_offset = header_length - len(col)
-            print(col, end=" " * r_offset)
-        print("")

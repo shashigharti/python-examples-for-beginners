@@ -1,8 +1,8 @@
 from bs4 import BeautifulSoup, SoupStrainer
 from billiard.pool import Pool
 from itertools import cycle
-
 from packages.scrapper import helper
+
 import datetime as dt
 import numpy as np
 import logging
@@ -118,11 +118,12 @@ class TwitterScrapper:
         return tweets if tweets else []
 
     def scrape(self, keywords):
+        
         all_tweets = []
         pool_size = 20
 
         start_date = dt.date.today() - dt.timedelta(14)
-        query = " ".join(keywords)
+        query = " ".join(keywords)        
 
         no_of_days = (dt.date.today() - start_date).days
         if no_of_days < pool_size:
