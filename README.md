@@ -28,6 +28,7 @@ Examples:
 ---------------
 1. [Exploring linear, exponential and quadratic functions](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/functions.ipynb)
 2. [Binomial Distribution](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/binomial_distribution.ipynb)
+3. [Python Scrapper](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/twitter_scrapper.ipynb)
 
 Getting Started:
 ---------------
