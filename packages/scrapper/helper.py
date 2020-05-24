@@ -83,3 +83,9 @@ def get_query_url(query, pos):
         if pos is None
         else RELOAD_URL.format(q=query, max_position=pos)
     )
+
+
+def find_value(html, key):
+    pos_begin = html.find(key) + len(key) + 2
+    pos_end = html.find('"', pos_begin)
+    return html[pos_begin:pos_end]

@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 from billiard.pool import Pool
 from itertools import cycle
 
-import helper
+from packages.scrapper import helper
 import datetime as dt
 import numpy as np
 import logging
@@ -117,46 +117,54 @@ class TwitterScrapper:
         tweets = list(self.get_tweets_per_page(*args))
         return tweets if tweets else []
 
+    def scrape(self, keywords):
+        all_tweets = []
+        pool_size = 20
+
+        start_date = dt.date.today() - dt.timedelta(14)
+        query = " ".join(keywords)
+
+        no_of_days = (dt.date.today() - start_date).days
+        if no_of_days < pool_size:
+            pool_size = no_of_days
+
+        date_ranges = [
+            start_date + dt.timedelta(days=elem)
+            for elem in np.linspace(0, no_of_days, pool_size + 1)
+        ]
+
+        if self.limit and pool_size:
+            self.limit = (self.limit // pool_size) + 1
+
+        queries = [
+            "{} since:{} until:{}".format(query, since, until)
+            for since, until in zip(date_ranges[:-1], date_ranges[1:])
+        ]
+
+        pool = Pool(pool_size)
+        logging.info("queries: {}".format(queries))
+
+        try:
+            for new_tweets in pool.imap_unordered(self.get_tweets, queries):
+                all_tweets.extend(new_tweets)
+        except KeyboardInterrupt:
+            logging.info(
+                "Program interrupted by user. Returning all tweets " "gathered so far."
+            )
+        finally:
+            pool.close()
+            pool.join()
+
+        return all_tweets
+        
 
 if __name__ == "__main__":
-    all_tweets = []
-    pool_size = 20
+    
     print(
         "Type comma separated keywords to search jobs (E.g, machine learning,software developer):"
     )
     keywords = input().strip().split(",")
     tapi = TwitterScrapper()
+    print(tapi.scrape(keywords))
 
-    start_date = dt.date.today() - dt.timedelta(14)
-    query = " ".join(keywords)
-
-    no_of_days = (dt.date.today() - start_date).days
-    if no_of_days < pool_size:
-        pool_size = no_of_days
-
-    date_ranges = [
-        start_date + dt.timedelta(days=elem)
-        for elem in np.linspace(0, no_of_days, pool_size + 1)
-    ]
-
-    if tapi.limit and pool_size:
-        tapi.limit = (tapi.limit // pool_size) + 1
-
-    queries = [
-        "{} since:{} until:{}".format(query, since, until)
-        for since, until in zip(date_ranges[:-1], date_ranges[1:])
-    ]
-
-    pool = Pool(pool_size)
-    logging.info("queries: {}".format(queries))
-
-    try:
-        for new_tweets in pool.imap_unordered(tapi.get_tweets, queries):
-            all_tweets.extend(new_tweets)
-    except KeyboardInterrupt:
-        logging.info(
-            "Program interrupted by user. Returning all tweets " "gathered so far."
-        )
-    finally:
-        pool.close()
-        pool.join()
+    
