@@ -29,7 +29,9 @@ Examples:
 1. [Exploring linear, exponential and quadratic functions](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/functions.ipynb)
 2. [Binomial Distribution](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/binomial_distribution.ipynb)
 3. [Twitter Scrapper](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/twitter_scrapper.ipynb)
-4. [Prepare own dataset for 'Nutrient Deficiency in Tomato'](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/plant-nutrient-deficiency/process-images.ipynb)
+4. Prepare own dataset for 'Nutrient Deficiency in Tomato'
+    4.1 [Scrapping](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/scrapping-plant-images-with-nutrient-deficiency.ipynb)
+    4.2 [Image Processing](https://github.com/shashigharti/python-examples-for-beginners/blob/master/notebooks/plant-nutrient-deficiency/process-images.ipynb)
 
 Getting Started:
 ---------------
