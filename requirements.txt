@@ -13,7 +13,7 @@ jedi==0.17.1
 jupyter-client==6.1.6
 jupyter-core==4.6.3
 lxml==4.5.2
-numpy==1.19.1
+numpy==1.22.0
 pandas==1.0.5
 parso==0.7.0
 pexpect==4.8.0
